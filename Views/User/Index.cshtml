@@ -1,0 +1,55 @@
+﻿@model List<GlobalEntity.User>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title">
+            <h2>
+              User Listing
+            </h2>
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <td>Id</td>
+                        <td>FirstName</td>
+                        <td>LastName</td>
+                        <td>Email</td>
+                        <td>Mobile</td>
+                        <td>CreatedDate</td>
+                        <td>Action</td>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.Mobile)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.CreatedDate)
+                        </td>
+                        <td>
+                            <a class="btn btn-primary">Edit</a> | <a class="btn btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            </table>
+
+        </div>
+    </div>
+

@@ -1,7 +1,19 @@
+using BusinessLayer;
+using BusinessLayer.Interface;
+using DataAccessLayer;
+using DataAccessLayer.Interface;
+using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+builder.Services.AddDbContext<User_DBContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("constring")));
+
+builder.Services.AddScoped<IUserDA, UserDA>();
+builder.Services.AddScoped<IUserBC, UserBC>();
 
 var app = builder.Build();
 
