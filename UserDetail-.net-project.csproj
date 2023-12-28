@@ -7,4 +7,10 @@
     <RootNamespace>UserDetail_.net_project</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+    <ProjectReference Include="..\GlobalEntity\GlobalEntity.csproj" />
+  </ItemGroup>
+
 </Project>
