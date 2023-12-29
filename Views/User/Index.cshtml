@@ -1,7 +1,9 @@
 ﻿@model List<GlobalEntity.User>
 
     <div class="card">
+        
         <div class="card-body">
+        <a class="btn btn-success" asp-controller="User" asp-action="Create">Add New</a>
             <div class="card-title">
             <h2>
               User Listing
@@ -26,6 +28,7 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(itemdisplay=>item.Id)
+                            @Html.HiddenFor(itemdisplay=>item.Id)
                         </td>
                         <td>
                             @Html.DisplayFor(itemdisplay=>item.FirstName)
@@ -43,7 +46,7 @@
                             @Html.DisplayFor(itemdisplay=>item.CreatedDate)
                         </td>
                         <td>
-                            <a class="btn btn-primary">Edit</a> | <a class="btn btn-danger">Remove</a>
+                            <a onclick="FunEdit(this)" class="btn btn-primary">Edit</a> | <a onclick="FunRemove(this)" class="btn btn-danger">Remove</a>
                         </td>
                     </tr>
                 }
@@ -53,3 +56,34 @@
         </div>
     </div>
 
+    <script type="text/javascript">
+    function FunEdit(element)
+    {
+        var id = $(element).closest('tr').find('input[type=hidden]').val();
+        window.location.href = "/user/Edit?id="+id;
+    }
+
+    function FunRemove(element) {
+        var id = $(element).closest('tr').find('input[type=hidden]').val();
+        if (confirm("do you want to remove?")) 
+        { 
+            $.ajax({
+                type: "POST",
+                url: "/User/Remove",
+                data: { id: id },
+                success: function (data) {
+                    if (data == 'pass') {
+                        alert('Removed Successfuly');
+                        window.location.reload();
+                    } else {
+                        alert("Failure due to:" + data)
+                    }
+                },
+                failure: function (err) {
+
+                }
+            });
+        }
+        //window.location.href = "/user/Edit?id=" + id;
+    }
+    </script>

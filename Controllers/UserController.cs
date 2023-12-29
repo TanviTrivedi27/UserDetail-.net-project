@@ -11,10 +11,32 @@ namespace UserDetail_.net_project.Controllers
         {
             this.userBC = userBC;
         }
-        public IActionResult Index()
-        {new List<GE::User>();
-            List<GE::User> users = this.userBC.GetUsers();
+        public async Task<IActionResult> Index()
+        {
+            List<GE::User> users = await this.userBC.GetUsers();
             return View(users);
+        }
+        public IActionResult Create()
+        {
+            
+            return View(new GE.User());
+        }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+            GE::User users = await this.userBC.GetIndividualUser(Convert.ToInt32(id));
+            return View("Create",users);
+        }
+        public async Task<IActionResult> Save(GE::User user)
+        {
+            string Response = await this.userBC.Save(user);
+            return Json(Response);
+        }
+
+        public async Task<IActionResult> Remove(string id)
+        {
+            string Response = await this.userBC.RemoveUser(Convert.ToInt32(id));
+            return Json(Response);
         }
     }
 }
