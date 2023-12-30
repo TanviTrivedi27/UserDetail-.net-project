@@ -9,7 +9,7 @@
               User Listing
             </h2>
             </div>
-            <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped"" id='userlist'>
                 <thead class="bg-dark text-white">
                     <tr>
                         <td>Id</td>
@@ -18,12 +18,13 @@
                         <td>Email</td>
                         <td>Mobile</td>
                         <td>CreatedDate</td>
+                        <td>DOB</td>
                         <td>Action</td>
 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(var item in Model)
+                   @*  @foreach(var item in Model)
                 {
                     <tr>
                         <td>
@@ -46,17 +47,30 @@
                             @Html.DisplayFor(itemdisplay=>item.CreatedDate)
                         </td>
                         <td>
-                            <a onclick="FunEdit(this)" class="btn btn-primary">Edit</a> | <a onclick="FunRemove(this)" class="btn btn-danger">Remove</a>
+                            @Html.DisplayFor(itemdisplay=>item.DOB)
+                        </td>
+                        <td>
+                            <a onclick="FunEdit(this)" class="btn btn-primary">Edit</a> | <a onclick="FunRemove(this)" class="btn btn-danger">Remove</a> |
+                            <a class="btn btn-primary">Detail</a>
                         </td>
                     </tr>
-                }
+                } *@
             </tbody>
             </table>
 
         </div>
     </div>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 
     <script type="text/javascript">
+        var js = jQuery.noConflict(true);
+        js(document).ready(function () {
+        // js('#userlist').DataTable({
+
+        //     });
+        LoadListing();
+        });
     function FunEdit(element)
     {
         var id = $(element).closest('tr').find('input[type=hidden]').val();
@@ -85,5 +99,32 @@
             });
         }
         //window.location.href = "/user/Edit?id=" + id;
+    }
+
+    function LoadListing(){
+        var userdata = [];
+        $.ajax({
+            type: "POST",
+            url: "/User/GetAll"
+            async:false,
+            success: function (data) {
+                $.each(data,function(key,value){
+                    var editbtn = "<a onclick='FunEdit(this)' class='btn btn - primary'>Edit</a>";
+                    var removebtn = "<a onclick='FunRemove(this)' class='btn btn - danger'>Remove</a>";
+                    var detailbtn = "<a class='btn btn-primary'>Detail</a>";
+                    var hdn = "<input type='hidden' value=" + value.id + "/>";
+                    var action = editbtn +"|"+ removebtn +"|"+ detailbtn + hdn;
+                    userdata.push([value.id,value.fname,value.lname,value.email,value.mobile,value.createddate,value.dob,action])
+                })
+            },
+            failure: function (err) {
+
+            }
+        });
+        
+        js('#userlist').DataTable({
+            data: userdata;
+        });
+
     }
     </script>

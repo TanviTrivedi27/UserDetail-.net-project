@@ -13,7 +13,7 @@ namespace UserDetail_.net_project.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<GE::User> users = await this.userBC.GetUsers();
+            List<GE::User> users = new List<GE.User>(); //await this.userBC.GetUsers();
             return View(users);
         }
         public IActionResult Create()
@@ -36,6 +36,11 @@ namespace UserDetail_.net_project.Controllers
         public async Task<IActionResult> Remove(string id)
         {
             string Response = await this.userBC.RemoveUser(Convert.ToInt32(id));
+            return Json(Response);
+        }
+        public async Task<IActionResult> GetAll()
+        {
+            var Response = await this.userBC.GetUsers();
             return Json(Response);
         }
     }

@@ -11,5 +11,7 @@ namespace UserDetail_.net_project.Models
         public string Mobile { get; set; }
         [NotMapped]
         public DateOnly CreatedDate { get; set; }
+        [NotMapped]
+        public DateOnly DOB { get; set; }
     }
 }
