@@ -1,54 +1,79 @@
 ﻿@model List<GlobalEntity.User>
 
+
     <div class="card">
         
-        <div class="card-body">
-        <a class="btn btn-success" asp-controller="User" asp-action="Create">Add New</a>
-            <div class="card-title">
-            <h2>
-              User Listing
-            </h2>
-            </div>
-        <table class="table table-bordered table-striped"" id='userlist'>
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <td>Id</td>
-                        <td>FirstName</td>
-                        <td>LastName</td>
-                        <td>Email</td>
-                        <td>Mobile</td>
-                        <td>CreatedDate</td>
-                        <td>DOB</td>
-                        <td>Action</td>
+        <div class="card-body ">
+        <div class="card-title d-flex justify-content-between">
+                <h2>
+                  User Listing
+                </h2>
+            <a class="btn btn-success" asp-controller="User" asp-action="Create">Add New</a>
+        </div>
+        <div class="d-flex justify-content-end" >
+            <select id="genderFilter" class="form-control mx-3" style="height:40px; width:200px">
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
 
+            <select id="skillFilter" class="form-control" style="height:40px; width:200px">
+                    <option value="">Select Skill</option>
+                    <option value="Php">Php</option>
+                    <option value="Kotlin">Kotlin</option>
+                    <option value="Java">Java</option>
+                    <option value="C#">C#</option>
+                </select>
+                
+            </div>
+
+        
+        <table class="table table-bordered table-striped" id='userlist'>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                    <th>Name</th>
+                        @* <td>LastName</td> *@
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>CreatedDate</th>
+                    <th >Gender</th>
+                    <th >Skill</th>
+                        @* <td>DOB</td> *@
+                    <th>Action</th>
+                  
                     </tr>
                 </thead>
                 <tbody>
                     @foreach(var item in Model.Select((x, i) => new { Value = x, Index = i+1 }))
                 {
                     <tr>
-                        <td>
+                        <td >
                     @Html.DisplayFor(itemdisplay=>item.Index)
                     @Html.HiddenFor(itemdisplay=>item.Value.Id)
                         </td>
-                        <td>
-                    @Html.DisplayFor(itemdisplay=>item.Value.FirstName)
-                        </td>
-                        <td>
+                        <td>@Html.DisplayFor(itemdisplay => item.Value.FirstName) @Html.DisplayFor(itemdisplay => item.Value.LastName)</td>
+                        @* <td>
                     @Html.DisplayFor(itemdisplay=>item.Value.LastName)
-                        </td>
+                        </td> *@
                         <td>
                     @Html.DisplayFor(itemdisplay=>item.Value.Email)
                         </td>
                         <td>
                     @Html.DisplayFor(itemdisplay=>item.Value.Mobile)
                         </td>
-                        <td>
+                        <td >
                     @Html.DisplayFor(itemdisplay=>item.Value.CreatedDate)
                         </td>
-                        <td>
-                    @Html.DisplayFor(itemdisplay=>item.Value.DOB)
+                        <td >
+                            @Html.DisplayFor(itemdisplay=>item.Value.Gender)
                         </td>
+                        <td >
+                            @Html.DisplayFor(itemdisplay=>item.Value.Skills)
+                        </td>
+                        @* <td>
+                    @Html.DisplayFor(itemdisplay=>item.Value.DOB)
+                        </td> *@
                         <td>
                             <a onclick="FunEdit(this)" class="btn btn-primary">Edit</a> | <a onclick="FunRemove(this)" class="btn btn-danger">Remove</a> |
                             <button onclick="FunDetail(this)" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -56,6 +81,7 @@
                             </button>
 
                         </td>
+                        
                     </tr>
                 } 
             </tbody>
@@ -81,6 +107,7 @@
                     <li>Gender: <span id="gender"></span></li>
                     <li>Skill: <span id="skills"></span></li>
                     <li>Year: <span id="year"></span></li>
+                    <li>Subscribe: <span id="subscribe"></span></li>
 
                 </ul>
             </div>
@@ -92,10 +119,56 @@
     </div>
 </div>
 
-@* <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script> *@
-
     <script type="text/javascript">
+        $(document).ready(function () {
+            new DataTable('#userlist', {
+                "searching": true
+            });
+            var table = $('#userlist').DataTable();
+            $("#userlist_filter.dataTables_filter").append($("#genderFilter"));
+            $("#userlist_filter.dataTables_filter").append($("#skillFilter"));
+            $("#userlist_filter.dataTables_filter").css('display', "flex");
+            $("#userlist_filter.dataTables_filter label:first-child").css('display', "flex");
+            $("#userlist_filter.dataTables_filter label:first-child").css('align-items', "center");
+       
+            var genderIndex = 0;
+            var skillIndex = 0;
+            $("#userlist th").each(function (i) {
+                if ($($(this)).html() == "Gender") {
+                    genderIndex = i;
+                }
+                if ($($(this)).html() == "Skill") {
+                    skillIndex = i;
+                }
+            });
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                var selectedItem = $('#genderFilter').val()
+                var gender = data[genderIndex];
+                if (selectedItem === "" || gender.toLowerCase()===selectedItem.toLowerCase()) {
+                        return true;
+                    }
+                    return false;
+                });
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var selectedItem = $('#skillFilter').val()
+                var skills = data[skillIndex];
+                if (selectedItem === "" || skills.toLowerCase().includes(selectedItem.toLowerCase())) {
+                    return true;
+                }
+                return false;
+            }
+        );
+        $("#genderFilter").change(function (e) {
+            table.draw();
+        });
+        $("#skillFilter").change(function (e) {
+            table.draw();
+        });
+
+        table.draw();
         // var js = jQuery.noConflict(true);
         // js(document).ready(function () {
         // // js('#userlist').DataTable({
@@ -103,6 +176,7 @@
         // //     });
         // LoadListing();
         // });
+    })
     function FunEdit(element)
     {
         var id = $(element).closest('tr').find('input[type=hidden]').val();
@@ -146,7 +220,7 @@
                 $('#email').text(data?.email) 
                 $('#mobile').text(data?.mobile)
                 $('#dob').text(data?.dob)  
-                 $('#skills').text(data?.skills)
+                $('#skills').text(data?.skills)
                 $('#gender').text(data?.gender)
                 $('#subscribe').text(data?.subscribe)
                 $('#year').text(data?.year)
