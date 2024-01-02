@@ -122,7 +122,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             new DataTable('#userlist', {
-                "searching": true
+                "searching": true,
             });
             var table = $('#userlist').DataTable();
             $("#userlist_filter.dataTables_filter").append($("#genderFilter"));
@@ -130,7 +130,7 @@
             $("#userlist_filter.dataTables_filter").css('display', "flex");
             $("#userlist_filter.dataTables_filter label:first-child").css('display', "flex");
             $("#userlist_filter.dataTables_filter label:first-child").css('align-items', "center");
-       
+         
             var genderIndex = 0;
             var skillIndex = 0;
             $("#userlist th").each(function (i) {
