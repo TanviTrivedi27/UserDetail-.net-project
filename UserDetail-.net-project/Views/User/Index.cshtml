@@ -37,10 +37,10 @@
                     <th>Email</th>
                     <th>Mobile</th>
                     <th>CreatedDate</th>
-                    <th >Gender</th>
-                    <th >Skill</th>
-                        @* <td>DOB</td> *@
+                   @* <td>DOB</td> *@
                     <th>Action</th>
+                    <th>Gender</th>
+                    <th>Skill</th>
                   
                     </tr>
                 </thead>
@@ -65,12 +65,7 @@
                         <td >
                     @Html.DisplayFor(itemdisplay=>item.Value.CreatedDate)
                         </td>
-                        <td >
-                            @Html.DisplayFor(itemdisplay=>item.Value.Gender)
-                        </td>
-                        <td >
-                            @Html.DisplayFor(itemdisplay=>item.Value.Skills)
-                        </td>
+                        
                         @* <td>
                     @Html.DisplayFor(itemdisplay=>item.Value.DOB)
                         </td> *@
@@ -80,6 +75,12 @@
                                 Detail
                             </button>
 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.Value.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(itemdisplay=>item.Value.Skills)
                         </td>
                         
                     </tr>
@@ -124,13 +125,15 @@
             new DataTable('#userlist', {
                 "searching": true,
             });
-            var table = $('#userlist').DataTable();
+       
+
+        var table = $('#userlist').DataTable();
             $("#userlist_filter.dataTables_filter").append($("#genderFilter"));
             $("#userlist_filter.dataTables_filter").append($("#skillFilter"));
             $("#userlist_filter.dataTables_filter").css('display', "flex");
             $("#userlist_filter.dataTables_filter label:first-child").css('display', "flex");
             $("#userlist_filter.dataTables_filter label:first-child").css('align-items', "center");
-         
+  
             var genderIndex = 0;
             var skillIndex = 0;
             $("#userlist th").each(function (i) {
@@ -163,12 +166,25 @@
         );
         $("#genderFilter").change(function (e) {
             table.draw();
+            // $("#userlist th:nth-child(7)").css('display', 'none');
+            // $("#userlist th:nth-child(8)").css('display', 'none');
+            // $("#userlist td:nth-child(7)").css('display', 'none');
+            // $("#userlist td:nth-child(8)").css('display', 'none');
         });
         $("#skillFilter").change(function (e) {
             table.draw();
+            // $("#userlist th:nth-child(7)").css('display', 'none');
+            // $("#userlist th:nth-child(8)").css('display', 'none');
+            // $("#userlist td:nth-child(7)").css('display', 'none');
+            // $("#userlist td:nth-child(8)").css('display', 'none');
         });
-
-        table.draw();
+         table.draw();
+        // $("#userlist th:nth-child(7)").css('display', 'none');
+        // $("#userlist th:nth-child(8)").css('display', 'none');
+        // $("#userlist td:nth-child(7)").css('display', 'none');
+        // $("#userlist td:nth-child(8)").css('display', 'none');
+       
+       
         // var js = jQuery.noConflict(true);
         // js(document).ready(function () {
         // // js('#userlist').DataTable({
@@ -177,6 +193,10 @@
         // LoadListing();
         // });
     })
+    $("#userlist th:nth-child(7)").css('display', 'none');
+    $("#userlist th:nth-child(8)").css('display', 'none');
+    $("#userlist td:nth-child(7)").css('display', 'none');
+    $("#userlist td:nth-child(8)").css('display', 'none');
     function FunEdit(element)
     {
         var id = $(element).closest('tr').find('input[type=hidden]').val();
@@ -258,6 +278,7 @@
     //     js('#userlist').DataTable({
     //         data: userdata;
     //     });
+
 
     }
     </script>

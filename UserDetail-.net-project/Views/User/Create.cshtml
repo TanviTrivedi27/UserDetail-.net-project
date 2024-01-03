@@ -103,6 +103,8 @@
 
         var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
             removeItemButton: true,
+            duplicateItemsAllowed: false,
+            editItems: true,
         });
         if (window.location.href.includes('Edit')) {
             $.ajax({
@@ -118,15 +120,13 @@
                     $('#txtmobile').text(data?.mobile);
                     const now = new Date(data?.dob);
                     const day = ("0" + now.getDate()).slice(-2);
-                    console.log(day)
                     const month = (now.getMonth() + 1);
                     const monthTemp = month.toString().length > 1 ? month : "0" + month;
                     var today = now.getFullYear() + "-" + (monthTemp) + "-" + (day)
                     $('#txtcdate').val(today);
                     $('#gender').val(data?.gender[0]?.toUpperCase() + data?.gender?.slice(1));
-                    $('#choices-multiple-remove-button').text(data?.skills);
                     $('#subscribe').attr("checked", data?.subscribe);
-                    multipleCancelButton.setValue( data?.skills.split(','))
+                    multipleCancelButton.setChoiceByValue(data?.skills.split(',').map((item) => item[0]?.toUpperCase()+item.slice(1)))
                 },
                 failure: function (err) {
 
